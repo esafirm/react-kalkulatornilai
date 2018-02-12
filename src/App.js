@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, TextInput, Button } from 'react-native';
+import { Text, View, Button } from 'react-native';
 
-const inputContainers = new Set();
+import FormContainer from './components/FormContainer';
+import FormItem from './components/FormItem';
 
 const Toolbar = props => (
   <View
@@ -21,58 +22,7 @@ const Toolbar = props => (
   </View>
 );
 
-const Card = ({ children }) => (
-  <View
-    style={{
-      backgroundColor: '#fff',
-      borderRadius: 10,
-      margin: 10,
-      padding: 10
-    }}
-  >
-    {children}
-  </View>
-);
-
-const Label = ({ text }) => (
-  <Text
-    style={{
-      color: '#111',
-      fontWeight: '500',
-      marginTop: 10
-    }}
-  >
-    {text}
-  </Text>
-);
-
 const DividerHorizontal = () => <View style={{ width: 8 }} />;
-
-class Form extends React.Component {
-  render() {
-    const { text, hint, onChangeText } = this.props;
-    return (
-      <View>
-        <Label text={text} />
-        <TextInput
-          ref={el => inputContainers.add(el)}
-          keyboardType={'numeric'}
-          style={[
-            { marginTop: 5, paddingLeft: 10, paddingRight: 10 },
-            {
-              height: 40,
-              borderRadius: 10,
-              borderWidth: 1,
-              borderColor: '#CCC'
-            }
-          ]}
-          placeholder={hint}
-          onChangeText={onChangeText}
-        />
-      </View>
-    );
-  }
-}
 
 class App extends React.Component {
   state = {
@@ -85,33 +35,37 @@ class App extends React.Component {
   };
 
   resetForm = () => {
-    inputContainers.forEach(input => {
-      if (input) {
-        input.setNativeProps({ text: '' });
-      }
-    });
+    this.form.reset();
   };
 
   render() {
     return (
       <View style={{ backgroundColor: '#F3F3F3', flexGrow: 1 }}>
         <Toolbar />
-        <Card>
-          <Form
+        <FormContainer
+          ref={el => (this.form = el)}
+          style={{
+            backgroundColor: '#fff',
+            borderRadius: 10,
+            margin: 10,
+            padding: 10
+          }}
+        >
+          <FormItem
             text="Rata - Rata Nilai Tugas"
             onChangeText={text => this.setState({ nilaiTugas: text })}
           />
-          <Form
+          <FormItem
             text="Nilai UTS"
             onChangeText={text => this.setState({ nilaUts: text })}
           />
-          <Form
+          <FormItem
             text="Nilai UAS"
             onChangeText={text => this.setState({ nilaiUas: text })}
           />
-          <Form text="Nilai Akhir" />
-          <Form text="Peringkat Nilai" />
-          <Form text="Predikat Nilai" />
+          <FormItem text="Nilai Akhir" />
+          <FormItem text="Peringkat Nilai" />
+          <FormItem text="Predikat Nilai" />
 
           <View
             style={{
@@ -128,7 +82,7 @@ class App extends React.Component {
               onPress={this.resetForm}
             />
           </View>
-        </Card>
+        </FormContainer>
       </View>
     );
   }
