@@ -17,12 +17,13 @@ class FormContainer extends React.Component {
     const { children, style } = this.props;
     return (
       <View style={style}>
-        {this.props.children.map(child => {
+        {this.props.children.map((child, index) => {
           if (child.type.name === 'FormItem') {
             return (
               <FormItem
                 {...child.props}
                 ref={el => this.inputContainers.add(el)}
+                key={index}
               />
             );
           } else {

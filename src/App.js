@@ -1,8 +1,18 @@
 import React from 'react';
-import { Text, View, Button } from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Linking,
+  Dimensions
+} from 'react-native';
+import { Router, Route, Link } from './Router';
 
-import FormContainer from './components/FormContainer';
-import FormItem from './components/FormItem';
+import CalculatorForm from './CalculatorForm';
+import SettingForm from './SettingForm';
+
+const width = Dimensions.get('window').width;
 
 const Toolbar = props => (
   <View
@@ -22,7 +32,65 @@ const Toolbar = props => (
   </View>
 );
 
-const DividerHorizontal = () => <View style={{ width: 8 }} />;
+const BottomBarItem = ({ image, to, text }) => (
+  <Link
+    to={to}
+    component={TouchableOpacity}
+    activeOpacity={0.4}
+    style={{ flexGrow: 1 }}
+  >
+    <View
+      style={{
+        flexGrow: 1,
+        backgroundColor: '#fff',
+        height: 60,
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
+    >
+      <Image
+        style={{
+          width: 25,
+          height: 25
+        }}
+        source={image}
+      />
+      <Text
+        style={{
+          fontSize: 12,
+          marginTop: 4,
+          color: '#111'
+        }}
+      >
+        {text}
+      </Text>
+    </View>
+  </Link>
+);
+
+const BottomBar = props => (
+  <View
+    style={{
+      flexDirection: 'row',
+      height: 60,
+      backgroundColor: '#fff',
+      shadowColor: '#111',
+      shadowOpacity: '0.4',
+      shadowRadius: 10
+    }}
+  >
+    <BottomBarItem
+      text="Calculator"
+      to="/"
+      image={'https://png.icons8.com/color/2x/calculator.png'}
+    />
+    <BottomBarItem
+      text="Setting"
+      to="/setting"
+      image={'https://png.icons8.com/ios/2x/horizontal-settings-mixer.png'}
+    />
+  </View>
+);
 
 class App extends React.Component {
   state = {
@@ -40,50 +108,16 @@ class App extends React.Component {
 
   render() {
     return (
-      <View style={{ backgroundColor: '#F3F3F3', flexGrow: 1 }}>
-        <Toolbar />
-        <FormContainer
-          ref={el => (this.form = el)}
-          style={{
-            backgroundColor: '#fff',
-            borderRadius: 10,
-            margin: 10,
-            padding: 10
-          }}
-        >
-          <FormItem
-            text="Rata - Rata Nilai Tugas"
-            onChangeText={text => this.setState({ nilaiTugas: text })}
-          />
-          <FormItem
-            text="Nilai UTS"
-            onChangeText={text => this.setState({ nilaUts: text })}
-          />
-          <FormItem
-            text="Nilai UAS"
-            onChangeText={text => this.setState({ nilaiUas: text })}
-          />
-          <FormItem text="Nilai Akhir" />
-          <FormItem text="Peringkat Nilai" />
-          <FormItem text="Predikat Nilai" />
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              marginTop: 20
-            }}
-          >
-            <Button title={'Hitung'} />
-            <DividerHorizontal />
-            <Button
-              title={'Reset'}
-              color={'#E0245E'}
-              onPress={this.resetForm}
-            />
+      <Router>
+        <View style={{ backgroundColor: '#F3F3F3', flexGrow: 1 }}>
+          <View style={{ flex: 1 }}>
+            <Toolbar />
+            <Route exact path="/" component={CalculatorForm} />
+            <Route exact path="/setting" component={SettingForm} />
           </View>
-        </FormContainer>
-      </View>
+          <BottomBar />
+        </View>
+      </Router>
     );
   }
 }
