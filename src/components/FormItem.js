@@ -20,14 +20,20 @@ class FormItem extends React.Component {
   }
 
   render() {
-    const { text, inputText, hint, onChangeText } = this.props;
+    const {
+      text,
+      inputText,
+      hint,
+      onChangeText,
+      keyboardType = 'numeric'
+    } = this.props;
     return (
       <View>
         <Label text={text} />
         <TextInput
           value={inputText}
           ref={el => (this.input = el)}
-          keyboardType={'numeric'}
+          keyboardType={keyboardType}
           style={[
             { marginTop: 5, paddingLeft: 10, paddingRight: 10 },
             {
