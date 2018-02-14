@@ -1,18 +1,9 @@
 import React from 'react';
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  Linking,
-  Dimensions
-} from 'react-native';
-import { Router, Route, Link } from './Router';
+import { Text, View, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { Router, Route, Mover } from './Router';
 
 import CalculatorForm from './CalculatorForm';
 import SettingForm from './SettingForm';
-
-const width = Dimensions.get('window').width;
 
 const Toolbar = props => (
   <View
@@ -32,13 +23,8 @@ const Toolbar = props => (
   </View>
 );
 
-const BottomBarItem = ({ image, to, text }) => (
-  <Link
-    to={to}
-    component={TouchableOpacity}
-    activeOpacity={0.4}
-    style={{ flexGrow: 1 }}
-  >
+const BottomBarItem = ({ image, onPress, text }) => (
+  <TouchableOpacity style={{ flexGrow: 1 }} onPress={onPress}>
     <View
       style={{
         flexGrow: 1,
@@ -65,31 +51,7 @@ const BottomBarItem = ({ image, to, text }) => (
         {text}
       </Text>
     </View>
-  </Link>
-);
-
-const BottomBar = props => (
-  <View
-    style={{
-      flexDirection: 'row',
-      height: 60,
-      backgroundColor: '#fff',
-      shadowColor: '#111',
-      shadowOpacity: '0.4',
-      shadowRadius: 10
-    }}
-  >
-    <BottomBarItem
-      text="Calculator"
-      to="/"
-      image={'https://png.icons8.com/color/2x/calculator.png'}
-    />
-    <BottomBarItem
-      text="Setting"
-      to="/setting"
-      image={'https://png.icons8.com/ios/2x/horizontal-settings-mixer.png'}
-    />
-  </View>
+  </TouchableOpacity>
 );
 
 class App extends React.Component {
@@ -99,23 +61,51 @@ class App extends React.Component {
     nilaiUas: 0,
     nilaiAkhir: 0,
     peringkatNilai: '',
-    predikatNilai: ''
+    predikatNilai: '',
+    to: ''
   };
 
   resetForm = () => {
     this.form.reset();
   };
 
+  renderBottomBar() {
+    return (
+      <View
+        style={{
+          flexDirection: 'row',
+          height: 60,
+          backgroundColor: '#fff',
+          shadowColor: '#111',
+          shadowOpacity: '0.4',
+          shadowRadius: 10
+        }}
+      >
+        <BottomBarItem
+          text="Calculator"
+          onPress={() => this.setState({ to: '/' })}
+          image={'https://png.icons8.com/color/2x/calculator.png'}
+        />
+        <BottomBarItem
+          text="Setting"
+          onPress={() => this.setState({ to: '/setting' })}
+          image={'https://png.icons8.com/ios/2x/horizontal-settings-mixer.png'}
+        />
+      </View>
+    );
+  }
+
   render() {
     return (
       <Router>
         <View style={{ backgroundColor: '#F3F3F3', flexGrow: 1 }}>
+          <Mover to={this.state.to} onMoved={() => this.setState({ to: '' })} />
           <View style={{ flex: 1 }}>
             <Toolbar />
             <Route exact path="/" component={CalculatorForm} />
             <Route exact path="/setting" component={SettingForm} />
           </View>
-          <BottomBar />
+          {this.renderBottomBar()}
         </View>
       </Router>
     );

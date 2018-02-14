@@ -1,3 +1,12 @@
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 
-export { BrowserRouter as Router, Route, Link };
+const Mover = ({ to, onMoved }) => {
+  if (to) {
+    onMoved();
+    return <Redirect to={to} />;
+  }
+  return null;
+};
+
+export { BrowserRouter as Router, Route, Mover };
