@@ -6,6 +6,8 @@ Extremely simpler version of [Kalkulator Nilai](https://github.com/GulajavaMinis
 
 Test service worker API and CRA lighthouse benchmark. It suprisingly good 
 
+![](https://github.com/esafirm/react-kalkulatornilai/blob/master/art/lighthouse.png?raw=true)
+
 ## License 
 
 MIT @ Esa Firman
