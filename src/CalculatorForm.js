@@ -65,7 +65,7 @@ class CalculatorForm extends React.Component {
         <FormItem
           hint="0-100"
           text="Nilai UTS"
-          onChangeText={text => this.setState({ nilaUts: text })}
+          onChangeText={text => this.setState({ nilaiUts: text })}
         />
         <FormItem
           hint="0-100"

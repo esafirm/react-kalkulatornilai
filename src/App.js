@@ -56,12 +56,6 @@ const BottomBarItem = ({ image, onPress, text }) => (
 
 class App extends React.Component {
   state = {
-    nilaiTugas: 0,
-    nilaUts: 0,
-    nilaiUas: 0,
-    nilaiAkhir: 0,
-    peringkatNilai: '',
-    predikatNilai: '',
     to: ''
   };
 
